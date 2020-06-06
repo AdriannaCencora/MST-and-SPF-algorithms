@@ -14,6 +14,8 @@ class AdjencyMatrix {
 		void fillWithRandomData(int numberOfVertices, int density);
 		void printMatrix();
 
+		void executePrimAlgorithm();
+
 	private:
 		int numberOfVertices;
 		int numberOfEdges;

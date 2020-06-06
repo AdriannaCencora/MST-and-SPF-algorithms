@@ -1,7 +1,8 @@
+#include <climits>
 #include <random>
 #include <fstream>
 #include <iomanip>
-
+#include <queue>
 #include "AdjencyMatrix.h"
 
 void AdjencyMatrix::initialize() {
@@ -93,3 +94,45 @@ void AdjencyMatrix::clear() {
 	numberOfVertices = 0;
 	adjencyMatrix = nullptr;
 }
+
+
+void AdjencyMatrix::executePrimAlgorithm() {
+	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
+	int mst [numberOfVertices];		//the cheapest cost of a connection to vertex v
+	int parents [numberOfVertices];	//edges providing that cheapest connection
+	bool visited [numberOfVertices];	//
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		mst[i] = INT_MAX;
+		parents[i] = -1;
+		visited[i] = false;
+	}
+
+	priorityQueue.push(std::make_pair(0,0));
+	mst[0] = 0;
+
+	while (!priorityQueue.empty()) {
+		int u = priorityQueue.top().second;
+		priorityQueue.pop();
+
+		visited[u] = true;
+
+		for (int v = 0; v < numberOfVertices; v++) {
+			if(adjencyMatrix[u][v] and !visited[v] and adjencyMatrix[u][v] < mst[v]) {
+				mst[v] = adjencyMatrix[u][v];
+				priorityQueue.push(std::make_pair(mst[v], v));
+				parents[v] = u;
+			}
+		}
+	}
+
+	int finalCost{0};
+	for(int i{1}; i < numberOfVertices; i++) {
+		std::cout << "Edge: " << parents[i] << " - " << i << ", weight: " << mst[i] << std::endl;
+		finalCost += mst[i];
+	}
+
+	std::cout << "Cost: " << finalCost << std::endl;
+
+}
+

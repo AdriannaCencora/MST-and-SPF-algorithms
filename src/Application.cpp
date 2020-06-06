@@ -6,6 +6,7 @@
 using namespace std;
 
 void Application::displayMSTMenu() {
+	cout << endl;
 	cout << "MST" << endl;
 	cout << "Pick a number." << endl;
     cout << "1. Read data from file." << endl;
@@ -18,6 +19,7 @@ void Application::displayMSTMenu() {
 }
 
 void Application::displayShortestPathMenu() {
+	cout << endl;
 	cout << "SHORTEST PATH PROBLEM" << endl;
 	cout << "Pick a number." << endl;
     cout << "1. Read data from file." << endl;
@@ -30,6 +32,7 @@ void Application::displayShortestPathMenu() {
 }
 
 void Application::displayMenu() {
+	cout << endl;
 	cout << "Choose problem to solve." << endl;
 	cout << "1. Minimum spanning tree problem." << endl;
 	cout << "2. Shortest path problem." << endl;
@@ -99,18 +102,23 @@ void Application::MSToperation() {
 				}
 			case '2':
 				{
+					//IMPLEMENT ME
 					break;
 				}
 			case '3':
 				{
+					adjencyMatrix->printMatrix();
 					break;
 				}
 			case '4':
 				{
+					//TODO: Use own priority queue implementation (heap)
+					adjencyMatrix->executePrimAlgorithm();
 					break;
 				}
 			case '5':
 				{
+					//IMPLEMENT ME
 					break;
 				}
 			default:
