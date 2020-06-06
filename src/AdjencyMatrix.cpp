@@ -97,11 +97,11 @@ void AdjencyMatrix::clear() {
 }
 
 
-void AdjencyMatrix::executePrimAlgorithm() {
+void AdjencyMatrix::executePrimsAlgorithm() {
 	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
 	int mst [numberOfVertices];		//the cheapest cost of a connection to vertex v
 	int parents [numberOfVertices];	//edges providing that cheapest connection
-	bool visited [numberOfVertices];	//
+	bool visited [numberOfVertices];
 
 	for(int i{0}; i < numberOfVertices; i++) {
 		mst[i] = INT_MAX;
@@ -137,3 +137,34 @@ void AdjencyMatrix::executePrimAlgorithm() {
 
 }
 
+void AdjencyMatrix::executeKruskalsAlgorithm() {
+	DisjointSet disjointSet(numberOfVertices);
+
+	int finalCost{0};
+	int edgesCounter{0};
+
+	while (edgesCounter < numberOfVertices - 1) {
+		int min = INT_MAX;
+		int firstSet{-1};
+		int secondSet{-1};
+
+		for(int i{0}; i < numberOfVertices; i++) {
+			for(int j{0}; j < numberOfVertices; j++) {
+				if(disjointSet.findSet(i) != disjointSet.findSet(j) and (adjencyMatrix[i][j] < min)) {
+					min = adjencyMatrix[i][j];
+					firstSet = i;
+					secondSet = j;
+				}
+			}
+		}
+
+		disjointSet.makeUnion(firstSet, secondSet);
+
+		std::cout << "Edge: " << firstSet << " - " << secondSet << ", weight: " << min << std::endl;
+
+		finalCost += min;
+		edgesCounter++;
+	}
+
+	std::cout << "Cost: " << finalCost << std::endl;
+}

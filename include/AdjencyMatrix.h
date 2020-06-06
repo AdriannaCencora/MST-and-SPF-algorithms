@@ -14,7 +14,8 @@ class AdjencyMatrix {
 		void fillWithRandomData(int numberOfVertices, int density);
 		void printMatrix();
 
-		void executePrimAlgorithm();
+		void executePrimsAlgorithm();
+		void executeKruskalsAlgorithm();
 
 	private:
 		int numberOfVertices;

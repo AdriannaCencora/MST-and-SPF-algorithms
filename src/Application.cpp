@@ -113,12 +113,12 @@ void Application::MSToperation() {
 			case '4':
 				{
 					//TODO: Use own priority queue implementation (heap)
-					adjencyMatrix->executePrimAlgorithm();
+					adjencyMatrix->executePrimsAlgorithm();
 					break;
 				}
 			case '5':
 				{
-					//IMPLEMENT ME
+					adjencyMatrix->executeKruskalsAlgorithm();
 					break;
 				}
 			default:
