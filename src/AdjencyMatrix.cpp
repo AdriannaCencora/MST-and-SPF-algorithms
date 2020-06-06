@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <queue>
 #include "AdjencyMatrix.h"
+#include "DisjointSet.h"
 
 void AdjencyMatrix::initialize() {
 
