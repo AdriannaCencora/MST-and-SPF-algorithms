@@ -150,7 +150,7 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 
 		for(int i{0}; i < numberOfVertices; i++) {
 			for(int j{0}; j < numberOfVertices; j++) {
-				if(disjointSet.findSet(i) != disjointSet.findSet(j) and (adjencyMatrix[i][j] < min)) {
+				if(adjencyMatrix[i][j] and (disjointSet.findSet(i) != disjointSet.findSet(j)) and (adjencyMatrix[i][j] < min)) {
 					min = adjencyMatrix[i][j];
 					firstSet = i;
 					secondSet = j;
