@@ -128,6 +128,8 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 	}
 
 	int finalCost{0};
+
+	std::cout << "PRIM'S ALGORITH - ADJACENCY MATRIX" << std::endl;
 	for(int i{1}; i < numberOfVertices; i++) {
 		std::cout << "Edge: " << parents[i] << " - " << i << ", weight: " << mst[i] << std::endl;
 		finalCost += mst[i];
@@ -148,18 +150,19 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 		int firstSet{-1};
 		int secondSet{-1};
 
-		for(int i{0}; i < numberOfVertices; i++) {
-			for(int j{0}; j < numberOfVertices; j++) {
-				if(adjencyMatrix[i][j] and (disjointSet.findSet(i) != disjointSet.findSet(j)) and (adjencyMatrix[i][j] < min)) {
-					min = adjencyMatrix[i][j];
-					firstSet = i;
-					secondSet = j;
+		for(int u{0}; u < numberOfVertices; u++) {
+			for(int v{0}; v < numberOfVertices; v++) {
+				if(adjencyMatrix[u][v] and (disjointSet.findSet(u) != disjointSet.findSet(v)) and (adjencyMatrix[u][v] < min)) {
+					min = adjencyMatrix[u][v];
+					firstSet = u;
+					secondSet = v;
 				}
 			}
 		}
 
 		disjointSet.makeUnion(firstSet, secondSet);
 
+		std::cout << "KRUSKAL'S ALGORITH - ADJACENCY MATRIX" << std::endl;
 		std::cout << "Edge: " << firstSet << " - " << secondSet << ", weight: " << min << std::endl;
 
 		finalCost += min;
@@ -167,4 +170,43 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 	}
 
 	std::cout << "Cost: " << finalCost << std::endl;
+}
+
+void AdjencyMatrix::executeDijkstraAlgorithm() {
+	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
+	int distances [numberOfVertices];
+	int parents [numberOfVertices];
+	bool visited [numberOfVertices];
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		distances[i] = INT_MAX;
+		parents[i] = -1;
+		visited[i] = false;
+	}
+
+	priorityQueue.push(std::make_pair(0, sourceVertex));
+	distances[sourceVertex] = 0;
+
+	while(!priorityQueue.empty()) {
+		int u = priorityQueue.top().second;
+		priorityQueue.pop();
+
+		visited[u] = true;
+
+		for(int v{0}; v < numberOfVertices; v++) {
+			if (adjencyMatrix[u][v] and !visited[v] and distances[v] > (distances[u] + adjencyMatrix[u][v]) and distances[u] != INT_MAX) {
+				distances[v] = distances[u] + adjencyMatrix[u][v];
+				parents[v] = u;
+				priorityQueue.push(std::make_pair(distances[v], v));
+			}
+		}
+
+	}
+
+	std::cout << "DIJKSTRA'S ALGORITH - ADJACENCY MATRIX" << std::endl;
+
+}
+
+void AdjencyMatrix::executeFordBellmanAlgorithm() {
+
 }

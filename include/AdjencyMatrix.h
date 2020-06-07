@@ -16,6 +16,8 @@ class AdjencyMatrix {
 
 		void executePrimsAlgorithm();
 		void executeKruskalsAlgorithm();
+		void executeDijkstraAlgorithm();
+		void executeFordBellmanAlgorithm();
 
 	private:
 		int numberOfVertices;

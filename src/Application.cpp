@@ -135,6 +135,8 @@ void Application::MSToperation() {
 void Application::shortestPathOperation() {
 	bool stop{false};
 
+	adjencyMatrix = std::make_unique<AdjencyMatrix>(false);
+
 	while (!stop) {
 		displayShortestPathMenu();
 		cin >> operationChosen;
@@ -147,6 +149,14 @@ void Application::shortestPathOperation() {
 				}
 			case '1':
 				{
+					std::string fileName;
+					std::cout << "Filename: " << std::endl;
+					cin >> fileName;
+
+					adjencyMatrix->readFromFile(fileName);
+					adjencyMatrix->printMatrix();
+
+
 					break;
 				}
 			case '2':
