@@ -165,14 +165,17 @@ void Application::shortestPathOperation() {
 				}
 			case '3':
 				{
+					adjencyMatrix->printMatrix();
 					break;
 				}
 			case '4':
 				{
+					adjencyMatrix->executeDijkstraAlgorithm();
 					break;
 				}
 			case '5':
 				{
+					adjencyMatrix->executeFordBellmanAlgorithm();
 					break;
 				}
 			default:

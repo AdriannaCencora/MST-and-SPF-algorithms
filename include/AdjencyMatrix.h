@@ -16,6 +16,7 @@ class AdjencyMatrix {
 
 		void executePrimsAlgorithm();
 		void executeKruskalsAlgorithm();
+
 		void executeDijkstraAlgorithm();
 		void executeFordBellmanAlgorithm();
 
@@ -33,4 +34,5 @@ class AdjencyMatrix {
 		void initialize();
 		void addEdge(int from, int to, int value);
 		void clear();
+		void printParents(int *parents, int vertex);
 };

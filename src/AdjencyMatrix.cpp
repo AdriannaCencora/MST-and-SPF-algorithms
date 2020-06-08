@@ -41,6 +41,9 @@ void AdjencyMatrix::printMatrix() {
 }
 
 void AdjencyMatrix::readFromFile(std::string fileName) {
+
+	clear();
+
 	std::fstream inputFile;
 	inputFile.open(fileName, std::ios::in);
 
@@ -172,6 +175,15 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 	std::cout << "Cost: " << finalCost << std::endl;
 }
 
+void AdjencyMatrix::printParents(int *parents, int vertex) {
+	if (parents[vertex] == -1)
+		return;
+	printParents(parents, parents[vertex]);
+	std::cout << " -> " <<  vertex;
+
+}
+
+
 void AdjencyMatrix::executeDijkstraAlgorithm() {
 	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
 	int distances [numberOfVertices];
@@ -203,10 +215,62 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 
 	}
 
-	std::cout << "DIJKSTRA'S ALGORITH - ADJACENCY MATRIX" << std::endl;
+	std::cout << "DIJKSTRA'S ALGORITHM - ADJACENCY MATRIX" << std::endl;
+
+	for (int i{0}; i < numberOfVertices; i++) {
+		std::cout << "Path: " << sourceVertex;
+
+		if (distances[i] != INT_MAX) {
+			printParents(parents, i);
+			std::cout << " weight: " << distances[i] << std::endl;
+		}
+	}
 
 }
 
 void AdjencyMatrix::executeFordBellmanAlgorithm() {
+	int distances [numberOfVertices];
+	int parents [numberOfVertices];
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		distances[i] = INT_MAX;
+		parents[i] = -1;
+	}
+
+	distances[sourceVertex] = 0;
+
+	for (int i{0}; i < numberOfVertices - 1; i++) {
+		for (int v{0}; v < numberOfVertices; v++) {
+			for (int u{0}; u < numberOfVertices; u++) {
+				if (adjencyMatrix[u][v] and distances[u] != INT_MAX and distances[v] > (distances[u] + adjencyMatrix[u][v])) {
+					distances[v] = distances[u] + adjencyMatrix[u][v];
+					parents[v] = u;
+				}
+			}
+
+		}
+	}
+
+
+	for (int v{0}; v < numberOfVertices; v++) {
+		for (int u{0}; u < numberOfVertices; u++) {
+			if (adjencyMatrix[u][v] and distances[v] > (distances[u] + adjencyMatrix[u][v])) {
+				std::cout << "Graph contains a negative-weight cycle." << std::endl;
+				return;
+			}
+		}
+	}
+
+	std::cout << "BELLMAN-FORD'S ALGORITHM - ADJACENCY MATRIX" << std::endl;
+
+	for (int i{0}; i < numberOfVertices; i++) {
+		std::cout << "Path: " << sourceVertex;
+
+		if (distances[i] != INT_MAX) {
+			printParents(parents, i);
+			std::cout << " weight: " << distances[i] << std::endl;
+		}
+	}
+
 
 }
