@@ -2,48 +2,48 @@
 #include <random>
 #include <fstream>
 #include <iomanip>
-#include <queue>
 
-#include "AdjencyMatrix.h"
+#include "AdjacencyMatrix.h"
 #include "DisjointSet.h"
 #include "Heap.h"
-#include "Node.h"
+#include "Edge.h"
 
-void AdjencyMatrix::initialize() {
+void AdjacencyMatrix::initialize() {
 
-	adjencyMatrix = new int*[numberOfVertices];
+	adjacencyMatrix = new int*[numberOfVertices];
 
 	for (int i{0}; i < numberOfVertices; i++) {
-		adjencyMatrix[i] = new int[numberOfVertices];
+		adjacencyMatrix[i] = new int[numberOfVertices];
 	}
 
 	for (int i{0}; i < numberOfVertices; i++) {
 		for (int j{0}; j < numberOfVertices; j++) {
-			adjencyMatrix[i][j] = 0;
+			adjacencyMatrix[i][j] = 0;
 		}
 	}
 
 }
 
-void AdjencyMatrix::addEdge(int from, int to, int value) {
-	adjencyMatrix[from][to] = value;
+void AdjacencyMatrix::addEdge(int from, int to, int value) {
+	adjacencyMatrix[from][to] = value;
 
 	if (isMST)
-		adjencyMatrix[to][from] = value;
+		adjacencyMatrix[to][from] = value;
 }
 
 
-void AdjencyMatrix::printMatrix() {
+void AdjacencyMatrix::printMatrix() {
 
+	std::endl << std::cout << "ADJACENCY MATRIX" << std::endl;
 	for (int i{0}; i < numberOfVertices; i++) {
 		for (int j{0}; j < numberOfVertices; j++) {
-			std::cout << std::setw(5) << adjencyMatrix[i][j];
+			std::cout << std::setw(5) << adjacencyMatrix[i][j];
 		}
 		std::cout << std::endl;
 	}
 }
 
-void AdjencyMatrix::readFromFile(std::string fileName) {
+void AdjacencyMatrix::readFromFile(std::string fileName) {
 
 	clear();
 
@@ -77,7 +77,7 @@ void AdjencyMatrix::readFromFile(std::string fileName) {
 }
 
 
-void AdjencyMatrix::fillWithRandomData(int numberOfVertices, int density) {
+void AdjacencyMatrix::fillWithRandomData(int numberOfVertices, int density) {
 
 	//TODO: IMPLEMENT ME
 	const int upperRange = 150;
@@ -87,24 +87,24 @@ void AdjencyMatrix::fillWithRandomData(int numberOfVertices, int density) {
 
 }
 
-void AdjencyMatrix::clear() {
+void AdjacencyMatrix::clear() {
 
-	if (adjencyMatrix != nullptr) {
+	if (adjacencyMatrix != nullptr) {
 		for (int i {0}; i < numberOfVertices; i++) {
-			delete[] adjencyMatrix[i];
+			delete[] adjacencyMatrix[i];
 		}
 
-		delete[] adjencyMatrix;
+		delete[] adjacencyMatrix;
 	}
 
 	numberOfEdges = 0;
 	numberOfVertices = 0;
-	adjencyMatrix = nullptr;
+	adjacencyMatrix = nullptr;
 }
 
 
-void AdjencyMatrix::executePrimsAlgorithm() {
-	Heap<Node> priorityQueue;
+void AdjacencyMatrix::executePrimsAlgorithm() {
+	Heap<Edge> priorityQueue;
 	int mst [numberOfVertices];		//the cheapest cost of a connection to vertex v
 	int parents [numberOfVertices];	//edges providing that cheapest connection
 	bool visited [numberOfVertices];
@@ -115,7 +115,7 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 		visited[i] = false;
 	}
 
-	priorityQueue.insert(Node(0,0));
+	priorityQueue.insert(Edge(0,0));
 	mst[0] = 0;
 
 	while (!priorityQueue.isEmpty()) {
@@ -124,9 +124,9 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 		visited[u] = true;
 
 		for (int v = 0; v < numberOfVertices; v++) {
-			if(adjencyMatrix[u][v] and !visited[v] and adjencyMatrix[u][v] < mst[v]) {
-				mst[v] = adjencyMatrix[u][v];
-				priorityQueue.insert(Node(mst[v], v));
+			if(adjacencyMatrix[u][v] and !visited[v] and adjacencyMatrix[u][v] < mst[v]) {
+				mst[v] = adjacencyMatrix[u][v];
+				priorityQueue.insert(Edge(mst[v], v));
 				parents[v] = u;
 			}
 		}
@@ -144,7 +144,7 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 
 }
 
-void AdjencyMatrix::executeKruskalsAlgorithm() {
+void AdjacencyMatrix::executeKruskalsAlgorithm() {
 	DisjointSet disjointSet(numberOfVertices);
 
 	int finalCost{0};
@@ -159,8 +159,8 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 
 		for(int u{0}; u < numberOfVertices; u++) {
 			for(int v{0}; v < numberOfVertices; v++) {
-				if(adjencyMatrix[u][v] and (disjointSet.findSet(u) != disjointSet.findSet(v)) and (adjencyMatrix[u][v] < min)) {
-					min = adjencyMatrix[u][v];
+				if(adjacencyMatrix[u][v] and (disjointSet.findSet(u) != disjointSet.findSet(v)) and (adjacencyMatrix[u][v] < min)) {
+					min = adjacencyMatrix[u][v];
 					firstSet = u;
 					secondSet = v;
 				}
@@ -178,7 +178,7 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 	std::cout << "Cost: " << finalCost << std::endl;
 }
 
-void AdjencyMatrix::printParents(int *parents, int vertex) {
+void AdjacencyMatrix::printParents(int *parents, int vertex) {
 	if (parents[vertex] == -1)
 		return;
 	printParents(parents, parents[vertex]);
@@ -187,8 +187,8 @@ void AdjencyMatrix::printParents(int *parents, int vertex) {
 }
 
 
-void AdjencyMatrix::executeDijkstraAlgorithm() {
-	Heap<Node> priorityQueue;
+void AdjacencyMatrix::executeDijkstraAlgorithm() {
+	Heap<Edge> priorityQueue;
 	int distances [numberOfVertices];
 	int parents [numberOfVertices];
 	bool visited [numberOfVertices];
@@ -199,7 +199,7 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 		visited[i] = false;
 	}
 
-	priorityQueue.insert(Node(0, sourceVertex));
+	priorityQueue.insert(Edge(0, sourceVertex));
 	distances[sourceVertex] = 0;
 
 	while(!priorityQueue.isEmpty()) {
@@ -208,10 +208,10 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 		visited[u] = true;
 
 		for(int v{0}; v < numberOfVertices; v++) {
-			if (adjencyMatrix[u][v] and !visited[v] and distances[v] > (distances[u] + adjencyMatrix[u][v]) and distances[u] != INT_MAX) {
-				distances[v] = distances[u] + adjencyMatrix[u][v];
+			if (adjacencyMatrix[u][v] and !visited[v] and distances[v] > (distances[u] + adjacencyMatrix[u][v]) and distances[u] != INT_MAX) {
+				distances[v] = distances[u] + adjacencyMatrix[u][v];
 				parents[v] = u;
-				priorityQueue.insert(Node(distances[v], v));
+				priorityQueue.insert(Edge(distances[v], v));
 			}
 		}
 
@@ -230,7 +230,7 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 
 }
 
-void AdjencyMatrix::executeFordBellmanAlgorithm() {
+void AdjacencyMatrix::executeFordBellmanAlgorithm() {
 	int distances [numberOfVertices];
 	int parents [numberOfVertices];
 
@@ -244,8 +244,8 @@ void AdjencyMatrix::executeFordBellmanAlgorithm() {
 	for (int i{0}; i < numberOfVertices - 1; i++) {
 		for (int v{0}; v < numberOfVertices; v++) {
 			for (int u{0}; u < numberOfVertices; u++) {
-				if (adjencyMatrix[u][v] and distances[u] != INT_MAX and distances[v] > (distances[u] + adjencyMatrix[u][v])) {
-					distances[v] = distances[u] + adjencyMatrix[u][v];
+				if (adjacencyMatrix[u][v] and distances[u] != INT_MAX and distances[v] > (distances[u] + adjacencyMatrix[u][v])) {
+					distances[v] = distances[u] + adjacencyMatrix[u][v];
 					parents[v] = u;
 				}
 			}
@@ -256,7 +256,7 @@ void AdjencyMatrix::executeFordBellmanAlgorithm() {
 
 	for (int v{0}; v < numberOfVertices; v++) {
 		for (int u{0}; u < numberOfVertices; u++) {
-			if (adjencyMatrix[u][v] and distances[v] > (distances[u] + adjencyMatrix[u][v])) {
+			if (adjacencyMatrix[u][v] and distances[v] > (distances[u] + adjacencyMatrix[u][v])) {
 				std::cout << "Graph contains a negative-weight cycle." << std::endl;
 				return;
 			}

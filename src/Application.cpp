@@ -76,7 +76,9 @@ void Application::run() {
 
 void Application::MSToperation() {
 
-	adjencyMatrix = std::make_unique<AdjencyMatrix>(true);
+	adjacencyMatrix = std::make_unique<AdjacencyMatrix>(true);
+	adjacencyList = std::make_unique<AdjacencyList>(true);
+
 	bool stop{false};
 
 	while (!stop) {
@@ -95,8 +97,11 @@ void Application::MSToperation() {
 					std::cout << "Filename: " << std::endl;
 					cin >> fileName;
 
-					adjencyMatrix->readFromFile(fileName);
-					adjencyMatrix->printMatrix();
+					adjacencyMatrix->readFromFile(fileName);
+					adjacencyMatrix->printMatrix();
+
+					adjacencyList->readFromFile(fileName);
+					adjacencyList->printList();
 
 					break;
 				}
@@ -107,18 +112,17 @@ void Application::MSToperation() {
 				}
 			case '3':
 				{
-					adjencyMatrix->printMatrix();
+					adjacencyMatrix->printMatrix();
 					break;
 				}
 			case '4':
 				{
-					//TODO: Use own priority queue implementation (heap)
-					adjencyMatrix->executePrimsAlgorithm();
+					adjacencyMatrix->executePrimsAlgorithm();
 					break;
 				}
 			case '5':
 				{
-					adjencyMatrix->executeKruskalsAlgorithm();
+					adjacencyMatrix->executeKruskalsAlgorithm();
 					break;
 				}
 			default:
@@ -135,7 +139,7 @@ void Application::MSToperation() {
 void Application::shortestPathOperation() {
 	bool stop{false};
 
-	adjencyMatrix = std::make_unique<AdjencyMatrix>(false);
+	adjacencyMatrix = std::make_unique<AdjacencyMatrix>(false);
 
 	while (!stop) {
 		displayShortestPathMenu();
@@ -153,8 +157,8 @@ void Application::shortestPathOperation() {
 					std::cout << "Filename: " << std::endl;
 					cin >> fileName;
 
-					adjencyMatrix->readFromFile(fileName);
-					adjencyMatrix->printMatrix();
+					adjacencyMatrix->readFromFile(fileName);
+					adjacencyMatrix->printMatrix();
 
 
 					break;
@@ -165,17 +169,17 @@ void Application::shortestPathOperation() {
 				}
 			case '3':
 				{
-					adjencyMatrix->printMatrix();
+					adjacencyMatrix->printMatrix();
 					break;
 				}
 			case '4':
 				{
-					adjencyMatrix->executeDijkstraAlgorithm();
+					adjacencyMatrix->executeDijkstraAlgorithm();
 					break;
 				}
 			case '5':
 				{
-					adjencyMatrix->executeFordBellmanAlgorithm();
+					adjacencyMatrix->executeFordBellmanAlgorithm();
 					break;
 				}
 			default:

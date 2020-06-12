@@ -3,11 +3,11 @@
 #include <iostream>
 #include <string>
 
-class AdjencyMatrix {
+class AdjacencyMatrix {
 	public:
-		AdjencyMatrix() = default;
-		AdjencyMatrix(bool isMST) : isMST(isMST) {}
-		~AdjencyMatrix() = default;
+		AdjacencyMatrix() = default;
+		AdjacencyMatrix(bool isMST) : isMST(isMST) {}
+		~AdjacencyMatrix() = default;
 
 		void readFromFile(std::string fileName);
 		void fillWithRandomData(int numberOfVertices, int density);
@@ -28,7 +28,7 @@ class AdjencyMatrix {
 		//Shortest path - graph is directed. Also file contains source vertex.
 		bool isMST;
 
-		int** adjencyMatrix;
+		int** adjacencyMatrix;
 
 		void initialize();
 		void addEdge(int from, int to, int value);

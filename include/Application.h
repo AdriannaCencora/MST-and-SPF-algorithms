@@ -2,19 +2,20 @@
 
 #include <memory>
 
-#include "AdjencyMatrix.h"
+#include "AdjacencyMatrix.h"
+#include "AdjacencyList.h"
 
 class Application {
 	public:
     Application() = default;
-
     ~Application() = default;
 
 	void run();
 
 
 	private:
-	std::unique_ptr<AdjencyMatrix> adjencyMatrix;
+	std::unique_ptr<AdjacencyMatrix> adjacencyMatrix;
+	std::unique_ptr<AdjacencyList> adjacencyList;
 
 	char problemChosen{};
 	char operationChosen{};
