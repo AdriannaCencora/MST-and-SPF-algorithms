@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15.7)
 
 project(sdizo2)
 
-include_directories(include)
+include_directories(include utilities)
 
 set (CMAKE_CXX_FLAGS "-g -Wall -W -ggdb3")
 

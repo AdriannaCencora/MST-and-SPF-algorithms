@@ -3,8 +3,11 @@
 #include <fstream>
 #include <iomanip>
 #include <queue>
+
 #include "AdjencyMatrix.h"
 #include "DisjointSet.h"
+#include "Heap.h"
+#include "Node.h"
 
 void AdjencyMatrix::initialize() {
 
@@ -101,7 +104,7 @@ void AdjencyMatrix::clear() {
 
 
 void AdjencyMatrix::executePrimsAlgorithm() {
-	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
+	Heap<Node> priorityQueue;
 	int mst [numberOfVertices];		//the cheapest cost of a connection to vertex v
 	int parents [numberOfVertices];	//edges providing that cheapest connection
 	bool visited [numberOfVertices];
@@ -112,19 +115,18 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 		visited[i] = false;
 	}
 
-	priorityQueue.push(std::make_pair(0,0));
+	priorityQueue.insert(Node(0,0));
 	mst[0] = 0;
 
-	while (!priorityQueue.empty()) {
-		int u = priorityQueue.top().second;
-		priorityQueue.pop();
+	while (!priorityQueue.isEmpty()) {
+		int u = priorityQueue.popElement().second;
 
 		visited[u] = true;
 
 		for (int v = 0; v < numberOfVertices; v++) {
 			if(adjencyMatrix[u][v] and !visited[v] and adjencyMatrix[u][v] < mst[v]) {
 				mst[v] = adjencyMatrix[u][v];
-				priorityQueue.push(std::make_pair(mst[v], v));
+				priorityQueue.insert(Node(mst[v], v));
 				parents[v] = u;
 			}
 		}
@@ -132,7 +134,7 @@ void AdjencyMatrix::executePrimsAlgorithm() {
 
 	int finalCost{0};
 
-	std::cout << "PRIM'S ALGORITH - ADJACENCY MATRIX" << std::endl;
+	std::cout << "PRIM'S ALGORITHM - ADJACENCY MATRIX" << std::endl;
 	for(int i{1}; i < numberOfVertices; i++) {
 		std::cout << "Edge: " << parents[i] << " - " << i << ", weight: " << mst[i] << std::endl;
 		finalCost += mst[i];
@@ -147,6 +149,8 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 
 	int finalCost{0};
 	int edgesCounter{0};
+
+	std::cout << "KRUSKAL'S ALGORITHM - ADJACENCY MATRIX" << std::endl;
 
 	while (edgesCounter < numberOfVertices - 1) {
 		int min = INT_MAX;
@@ -165,7 +169,6 @@ void AdjencyMatrix::executeKruskalsAlgorithm() {
 
 		disjointSet.makeUnion(firstSet, secondSet);
 
-		std::cout << "KRUSKAL'S ALGORITH - ADJACENCY MATRIX" << std::endl;
 		std::cout << "Edge: " << firstSet << " - " << secondSet << ", weight: " << min << std::endl;
 
 		finalCost += min;
@@ -185,7 +188,7 @@ void AdjencyMatrix::printParents(int *parents, int vertex) {
 
 
 void AdjencyMatrix::executeDijkstraAlgorithm() {
-	std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int> >, std::greater<std::pair<int, int> > > priorityQueue;
+	Heap<Node> priorityQueue;
 	int distances [numberOfVertices];
 	int parents [numberOfVertices];
 	bool visited [numberOfVertices];
@@ -196,12 +199,11 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 		visited[i] = false;
 	}
 
-	priorityQueue.push(std::make_pair(0, sourceVertex));
+	priorityQueue.insert(Node(0, sourceVertex));
 	distances[sourceVertex] = 0;
 
-	while(!priorityQueue.empty()) {
-		int u = priorityQueue.top().second;
-		priorityQueue.pop();
+	while(!priorityQueue.isEmpty()) {
+		int u = priorityQueue.popElement().second;
 
 		visited[u] = true;
 
@@ -209,7 +211,7 @@ void AdjencyMatrix::executeDijkstraAlgorithm() {
 			if (adjencyMatrix[u][v] and !visited[v] and distances[v] > (distances[u] + adjencyMatrix[u][v]) and distances[u] != INT_MAX) {
 				distances[v] = distances[u] + adjencyMatrix[u][v];
 				parents[v] = u;
-				priorityQueue.push(std::make_pair(distances[v], v));
+				priorityQueue.insert(Node(distances[v], v));
 			}
 		}
 
