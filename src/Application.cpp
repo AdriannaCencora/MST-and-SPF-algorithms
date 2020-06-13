@@ -125,6 +125,7 @@ void Application::MSToperation() {
 			case '5':
 				{
 					adjacencyMatrix->executeKruskalsAlgorithm();
+					adjacencyList->executeKruskalsAlgorithm();
 					break;
 				}
 			default:

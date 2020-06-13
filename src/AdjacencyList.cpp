@@ -108,10 +108,10 @@ void AdjacencyList::executePrimsAlgorithm() {
 		visited[u] = true;
 
 		adjacencyList[u].setCurrentNodeToHead();
-		while(adjacencyList[u].hasNextNode()) {
+		while(adjacencyList[u].hasNodes()) {
 
-			int v = adjacencyList[u].getNextNode().first;
-			int weight = adjacencyList[u].getNextNode().second;
+			int v = adjacencyList[u].getNodeData().first;
+			int weight = adjacencyList[u].getNodeData().second;
 
 			if (visited[v] == false and weight < mst[v]) {
 				mst[v] = weight;
@@ -134,7 +134,45 @@ void AdjacencyList::executePrimsAlgorithm() {
 }
 
 void AdjacencyList::executeKruskalsAlgorithm() {
+	DisjointSet disjointSet(numberOfVertices);
+	Heap<KruskalEdge> priorityQueue;
+	int finalCost{0};
 
+	//prepare and sort
+	for (int u{0}; u < numberOfVertices; u++) {
+
+		adjacencyList[u].setCurrentNodeToHead();
+
+		 while(adjacencyList[u].hasNodes()) {
+
+			int dest = adjacencyList[u].getNodeData().first;
+			int weight = adjacencyList[u].getNodeData().second;
+			priorityQueue.insert(KruskalEdge(u, dest, weight));
+
+		 }
+	}
+
+	std::cout << std::endl << "KRUSKAL'S ALGORITHM - ADJACENCY LIST" << std::endl;
+	while(!priorityQueue.isEmpty()) {
+		auto edge = priorityQueue.popElement();
+		int u = edge.from;
+		int v = edge.to;
+
+		if (disjointSet.findSet(u) != disjointSet.findSet(v)) {
+			int min = edge.weight;
+			int firstSet = u;
+			int secondSet = v;
+
+			disjointSet.makeUnion(firstSet, secondSet);
+
+			std::cout << "Edge: " << firstSet << " - " << secondSet << ", weight: " << min << std::endl;
+
+			finalCost += min;
+
+		}
+	}
+
+	std::cout << "Cost: " << finalCost << std::endl;
 }
 
 void AdjacencyList::executeDijkstraAlgorithm() {}

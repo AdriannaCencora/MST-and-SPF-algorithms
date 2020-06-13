@@ -22,3 +22,31 @@ struct Edge {
 	}
 
 };
+
+struct KruskalEdge {
+	KruskalEdge() = default;
+	KruskalEdge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
+
+	int from;
+	int to;
+	int weight;
+
+	bool operator==(const KruskalEdge &edge) const {
+		return  weight == edge.weight;
+	}
+
+	bool operator<(const KruskalEdge &edge) const {
+		return weight < edge.weight;
+	}
+
+	bool operator>(const KruskalEdge &edge) const {
+		return weight > edge.weight;
+	}
+
+	bool operator!=(const KruskalEdge &edge) const {
+		return weight != edge.weight;
+	}
+
+
+
+};

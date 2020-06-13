@@ -161,21 +161,19 @@ public:
 
 	}
 
-	bool hasNextNode() {
+	bool hasNodes() {
 		 if (currentNode != nullptr)
 			 return true;
 
 		 return false;
 	}
 
-	T getNextNode() {
-
+	T getNodeData() {
 		if (currentNode != nullptr) {
-			T nextNode = currentNode->data;
+			T nodeData = currentNode->data;
 			currentNode = currentNode->next;
-			return nextNode;
+			return nodeData;
 		}
-
 		return T();
 	}
 
