@@ -9,8 +9,7 @@
 
 void AdjacencyList::initialize() {
 
-	adjacencyList = new DoubleLinkedList<Edge>[numberOfVertices];  //is * needed?
-
+	adjacencyList = new DoubleLinkedList<Edge>[numberOfVertices];
 
 }
 
@@ -25,7 +24,7 @@ void AdjacencyList::addEdge(int from, int to, int value) {
 
 void AdjacencyList::printList() {
 
-	std::endl << std::cout << "ADJACENCY LIST" << std::endl;
+	std::cout << std::endl << "ADJACENCY LIST" << std::endl;
 	for(int i{0}; i < numberOfVertices; i++) {
 		std::cout << "Vertex[" << i << "]: ";
 		adjacencyList[i].print();
@@ -88,3 +87,55 @@ void AdjacencyList::clear() {
 	numberOfVertices = 0;
 	adjacencyList = nullptr;
 }
+
+void AdjacencyList::executePrimsAlgorithm() {
+	Heap<Edge> priorityQueue;
+	int mst [numberOfVertices];		//the cheapest cost of a connection to vertex v
+	int parents [numberOfVertices];	//edges providing that cheapest connection
+	bool visited [numberOfVertices];
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		mst[i] = INT_MAX;
+		parents[i] = -1;
+		visited[i] = false;
+	}
+
+	priorityQueue.insert(Edge(0,0));
+	mst[0] = 0;
+
+	while(!priorityQueue.isEmpty()) {
+		int u = priorityQueue.popElement().second;
+		visited[u] = true;
+
+		adjacencyList[u].setCurrentNodeToHead();
+		while(adjacencyList[u].hasNextNode()) {
+
+			int v = adjacencyList[u].getNextNode().first;
+			int weight = adjacencyList[u].getNextNode().second;
+
+			if (visited[v] == false and weight < mst[v]) {
+				mst[v] = weight;
+				parents[v] = u;
+				priorityQueue.insert(Edge(mst[v], v));
+			}
+		}
+	}
+
+	int finalCost{0};
+
+	std::cout << "PRIM'S ALGORITHM - ADJACENCY LIST" << std::endl;
+	for(int i{1}; i < numberOfVertices; i++) {
+		std::cout << "Edge: " << parents[i] << " - " << i << ", weight: " << mst[i] << std::endl;
+		finalCost += mst[i];
+	}
+
+	std::cout << "Cost: " << finalCost << std::endl;
+
+}
+
+void AdjacencyList::executeKruskalsAlgorithm() {
+
+}
+
+void AdjacencyList::executeDijkstraAlgorithm() {}
+void AdjacencyList::executeFordBellmanAlgorithm() {}

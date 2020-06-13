@@ -15,7 +15,7 @@ public:
 	};
 
 private:
-	Node* currentNode;
+	Node* currentNode{nullptr};
 	Node* head{nullptr};
 	Node* tail{nullptr};
 	size_t size{};
@@ -68,6 +68,12 @@ public:
 			head = newNode;
 			tail = newNode;
 		}
+		else if (size == 1) {
+			head->next = newNode;
+			newNode->prev = head;
+			tail = newNode;
+		}
+
 		else {
 			tail->next = newNode;
 			newNode->prev = tail;
@@ -153,6 +159,28 @@ public:
 
 		std::cout <<  std::endl;
 
+	}
+
+	bool hasNextNode() {
+		 if (currentNode != nullptr)
+			 return true;
+
+		 return false;
+	}
+
+	T getNextNode() {
+
+		if (currentNode != nullptr) {
+			T nextNode = currentNode->data;
+			currentNode = currentNode->next;
+			return nextNode;
+		}
+
+		return T();
+	}
+
+	void setCurrentNodeToHead() {
+		currentNode = head;
 	}
 
 	bool isEmpty() {

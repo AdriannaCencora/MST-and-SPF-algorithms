@@ -5,7 +5,6 @@ struct Edge {
 	int first;
 	int second;
 
-
 	bool operator==(const Edge &edge) const {
 		return first == edge.first;
 	}

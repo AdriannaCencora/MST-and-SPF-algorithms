@@ -113,11 +113,13 @@ void Application::MSToperation() {
 			case '3':
 				{
 					adjacencyMatrix->printMatrix();
+					adjacencyList->printList();
 					break;
 				}
 			case '4':
 				{
 					adjacencyMatrix->executePrimsAlgorithm();
+					adjacencyList->executePrimsAlgorithm();
 					break;
 				}
 			case '5':

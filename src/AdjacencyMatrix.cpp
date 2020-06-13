@@ -34,7 +34,7 @@ void AdjacencyMatrix::addEdge(int from, int to, int value) {
 
 void AdjacencyMatrix::printMatrix() {
 
-	std::endl << std::cout << "ADJACENCY MATRIX" << std::endl;
+	std::cout << std::endl << "ADJACENCY MATRIX" << std::endl;
 	for (int i{0}; i < numberOfVertices; i++) {
 		for (int j{0}; j < numberOfVertices; j++) {
 			std::cout << std::setw(5) << adjacencyMatrix[i][j];
