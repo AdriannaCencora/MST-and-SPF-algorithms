@@ -19,6 +19,8 @@ class AdjacencyMatrix {
 		void executeDijkstraAlgorithm();
 		void executeFordBellmanAlgorithm();
 
+		int getCurrentDensity();
+		bool findEdge(int from, int to);
 	private:
 		int numberOfVertices;
 		int numberOfEdges;

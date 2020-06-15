@@ -11,11 +11,13 @@ void AdjacencyList::initialize() {
 
 	adjacencyList = new DoubleLinkedList<Edge>[numberOfVertices];
 
+	srand (time(NULL));
 }
 
 void AdjacencyList::addEdge(int from, int to, int value) {
 
 	adjacencyList[from].insertBack(Edge(to, value));
+	numberOfEdges++;
 
 	if (isMST)
 		adjacencyList[to].insertBack(Edge(from, value));
@@ -35,6 +37,7 @@ void AdjacencyList::printList() {
 void AdjacencyList::readFromFile(std::string fileName) {
 	clear();
 
+	int targetNumberOfEdges;
 	std::fstream inputFile;
 	inputFile.open(fileName, std::ios::in);
 
@@ -43,7 +46,7 @@ void AdjacencyList::readFromFile(std::string fileName) {
 		return;
 	}
 
-	inputFile >> numberOfEdges;
+	inputFile >> targetNumberOfEdges;
 	inputFile >> numberOfVertices;
 
 	initialize();
@@ -51,26 +54,81 @@ void AdjacencyList::readFromFile(std::string fileName) {
 	if (!isMST)
 		inputFile >> sourceVertex;
 
-	int edgesCounter = 0;
 
-	while (edgesCounter < numberOfEdges and inputFile) {
+	while (inputFile) {
 		int startVertex, endVertex, weight;
 
 		inputFile >> startVertex >> endVertex >> weight;
 		addEdge(startVertex, endVertex, weight);
-		edgesCounter++;
 	}
 
 	inputFile.close();
 }
 
-void AdjacencyList::fillWithRandomData(int numberOfVertices, int density) {
+int AdjacencyList::getCurrentDensity() {
+	int maxEdgeAmount = numberOfVertices * (numberOfVertices - 1);
 
-	//TODO: IMPLEMENT ME
-	const int upperRange = 150;
-	std::random_device seed;
-	std::mt19937 randomGenerator(seed());
-	std::uniform_int_distribution<> transform(1, upperRange);
+	if(isMST)
+		maxEdgeAmount /= 2;
+
+	return (int)(((float)numberOfEdges / (float)maxEdgeAmount) * 100);
+}
+
+bool AdjacencyList::findEdge(int from, int to) {
+	adjacencyList[from].setCurrentNodeToHead();
+
+	while(adjacencyList[from].hasNodes()) {
+		auto nodeData = adjacencyList[from].getNodeData();
+
+		if(nodeData.first == to)
+			return true;
+	}
+
+	return false;
+}
+
+void AdjacencyList::fillWithRandomData(int givenNumberOfVertices, int density) {
+
+	int weightRange = 100;
+	int weightBase = 1;
+	clear();
+
+	numberOfVertices = givenNumberOfVertices;
+
+	std::cout <<  numberOfVertices << std::endl;
+
+	initialize();
+
+	//dummy mst TODO: improve method
+	for(int i{1}; i < numberOfVertices; i++) {
+		int weight = rand() % weightRange + weightBase;
+		addEdge(0, i, weight);
+	}
+
+	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
+	std::cout << "Density: " << density << std::endl;
+	while (getCurrentDensity() < density) {
+	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
+		int from = rand() % numberOfVertices;
+		int to = rand() % numberOfVertices;
+		int weight = rand() % weightRange + weightBase;
+		std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+		printList();
+		if (from == to) {
+			std::cout << " if (from == to): ";
+			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+			continue;
+		}
+
+		if (findEdge(from, to)) {
+			std::cout << " findEdge(from, to): ";
+			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+			continue;
+		}
+
+		addEdge(from, to, weight);
+
+	}
 
 }
 

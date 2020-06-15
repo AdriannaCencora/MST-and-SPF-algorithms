@@ -1,5 +1,5 @@
 #include <climits>
-#include <random>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 
@@ -22,10 +22,12 @@ void AdjacencyMatrix::initialize() {
 		}
 	}
 
+	srand (time(NULL));
 }
 
 void AdjacencyMatrix::addEdge(int from, int to, int value) {
 	adjacencyMatrix[from][to] = value;
+	numberOfEdges++;
 
 	if (isMST)
 		adjacencyMatrix[to][from] = value;
@@ -47,6 +49,8 @@ void AdjacencyMatrix::readFromFile(std::string fileName) {
 
 	clear();
 
+	int targetNumberOfEdges;
+
 	std::fstream inputFile;
 	inputFile.open(fileName, std::ios::in);
 
@@ -55,7 +59,7 @@ void AdjacencyMatrix::readFromFile(std::string fileName) {
 		return;
 	}
 
-	inputFile >> numberOfEdges;
+	inputFile >> targetNumberOfEdges;
 	inputFile >> numberOfVertices;
 
 	initialize();
@@ -63,27 +67,75 @@ void AdjacencyMatrix::readFromFile(std::string fileName) {
 	if (!isMST)
 		inputFile >> sourceVertex;
 
-	int edgesCounter = 0;
 
-	while (edgesCounter < numberOfEdges and inputFile) {
+	while (inputFile) {
 		int startVertex, endVertex, weight;
 
 		inputFile >> startVertex >> endVertex >> weight;
 		addEdge(startVertex, endVertex, weight);
-		edgesCounter++;
 	}
 
 	inputFile.close();
 }
 
+int AdjacencyMatrix::getCurrentDensity() {
+	int maxEdgeAmount = numberOfVertices * (numberOfVertices - 1);
 
-void AdjacencyMatrix::fillWithRandomData(int numberOfVertices, int density) {
+	if(isMST)
+		maxEdgeAmount /= 2;
 
-	//TODO: IMPLEMENT ME
-	const int upperRange = 150;
-	std::random_device seed;
-	std::mt19937 randomGenerator(seed());
-	std::uniform_int_distribution<> transform(1, upperRange);
+	return (int)(((float)numberOfEdges / (float)maxEdgeAmount) * 100);
+}
+
+bool AdjacencyMatrix::findEdge(int from, int to) {
+	if (adjacencyMatrix[from][to] != 0)
+		return true;
+	return false;
+}
+
+
+void AdjacencyMatrix::fillWithRandomData(int givenNumberOfVertices, int density) {
+
+	int weightRange = 100;
+	int weightBase = 1;
+	clear();
+
+	numberOfVertices = givenNumberOfVertices;
+
+	std::cout <<  numberOfVertices << std::endl;
+
+	initialize();
+
+	//dummy mst TODO: improve method
+	for(int i{1}; i < numberOfVertices; i++) {
+		int weight = rand() % weightRange + weightBase;
+		addEdge(0, i, weight);
+	}
+
+	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
+	std::cout << "Density: " << density << std::endl;
+	while (getCurrentDensity() < density) {
+	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
+		int from = rand() % numberOfVertices;
+		int to = rand() % numberOfVertices;
+		int weight = rand() % weightRange + weightBase;
+		std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+		printMatrix();
+		if (from == to) {
+			std::cout << " if (from == to): ";
+			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+			continue;
+		}
+
+		if (findEdge(from, to)) {
+			std::cout << " findEdge(from, to): ";
+			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
+			continue;
+		}
+
+		addEdge(from, to, weight);
+
+	}
 
 }
 

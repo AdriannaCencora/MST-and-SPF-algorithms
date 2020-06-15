@@ -22,6 +22,9 @@ class AdjacencyList {
 		void executeDijkstraAlgorithm();
 		void executeFordBellmanAlgorithm();
 
+		bool findEdge(int from, int to);
+		int getCurrentDensity();
+
 	private:
 		int numberOfVertices;
 		int numberOfEdges;

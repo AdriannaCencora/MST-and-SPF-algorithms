@@ -107,7 +107,12 @@ void Application::MSToperation() {
 				}
 			case '2':
 				{
-					//IMPLEMENT ME
+					adjacencyMatrix->fillWithRandomData(11, 60);
+					adjacencyMatrix->printMatrix();
+
+					adjacencyList->fillWithRandomData(11,60);
+					adjacencyList->printList();
+
 					break;
 				}
 			case '3':
@@ -171,6 +176,11 @@ void Application::shortestPathOperation() {
 				}
 			case '2':
 				{
+					adjacencyMatrix->fillWithRandomData(11, 60);
+					adjacencyMatrix->printMatrix();
+
+					adjacencyList->fillWithRandomData(11,60);
+					adjacencyList->printList();
 					break;
 				}
 			case '3':
