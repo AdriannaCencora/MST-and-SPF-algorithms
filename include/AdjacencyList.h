@@ -35,5 +35,5 @@ class AdjacencyList {
 		void initialize();
 		void addEdge(int from, int to, int value);
 		void clear();
-//		void printParents(int *parents, int vertex);
+		void printParents(int *parents, int vertex);
 };

@@ -20,9 +20,9 @@ public:
 	void insert(T value) {
 		heapArray->insert(heapArray->getSize(), value);
 
-		fixUp(heapArray->getSize() - 1);
-
 		++size;
+
+		fixUp(heapArray->getSize() - 1);
 	}
 
 	void fixUp(int indexFound) {
@@ -54,8 +54,10 @@ public:
 			 if ((*heapArray)[swapChildIndex] < (*heapArray)[parentIndex]) {
 
 				 heapArray->swapElements(parentIndex, swapChildIndex);
-				 parentIndex = swapChildIndex;
 			 }
+
+			 parentIndex = swapChildIndex;
+
 			 leftChildIndex = 2 * parentIndex + 1;
 			 rightChildIndex = 2 * parentIndex + 2;
 		}
@@ -93,11 +95,18 @@ public:
 
 	}
 
+	void printElements() {
+		for(int i{0}; i < getSize(); i++) {
+			std::cout << (*heapArray)[i] << std::endl;
+		}
+	}
+
 	T popElement() {
 		T element = (*heapArray)[0];
 
 		heapArray->swapElements(0, heapArray->getSize() -1);
 		heapArray->remove(heapArray->getSize() -1);
+
 		fixDown(0);
 		--size;
 

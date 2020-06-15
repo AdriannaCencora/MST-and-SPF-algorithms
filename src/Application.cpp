@@ -143,6 +143,7 @@ void Application::shortestPathOperation() {
 	bool stop{false};
 
 	adjacencyMatrix = std::make_unique<AdjacencyMatrix>(false);
+	adjacencyList = std::make_unique<AdjacencyList>(false);
 
 	while (!stop) {
 		displayShortestPathMenu();
@@ -163,6 +164,8 @@ void Application::shortestPathOperation() {
 					adjacencyMatrix->readFromFile(fileName);
 					adjacencyMatrix->printMatrix();
 
+					adjacencyList->readFromFile(fileName);
+					adjacencyList->printList();
 
 					break;
 				}
@@ -173,16 +176,19 @@ void Application::shortestPathOperation() {
 			case '3':
 				{
 					adjacencyMatrix->printMatrix();
+					adjacencyList->printList();
 					break;
 				}
 			case '4':
 				{
 					adjacencyMatrix->executeDijkstraAlgorithm();
+					adjacencyList->executeDijkstraAlgorithm();
 					break;
 				}
 			case '5':
 				{
 					adjacencyMatrix->executeFordBellmanAlgorithm();
+					adjacencyList->executeFordBellmanAlgorithm();
 					break;
 				}
 			default:

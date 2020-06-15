@@ -21,7 +21,16 @@ struct Edge {
 		return first != edge.first;
 	}
 
+
+
 };
+
+	inline std::ostream& operator<<(std::ostream& os, const Edge& edge)
+	{
+	    os << edge.first << " - " << edge.second;
+
+	    return os;
+	}
 
 struct KruskalEdge {
 	KruskalEdge() = default;
@@ -39,14 +48,28 @@ struct KruskalEdge {
 		return weight < edge.weight;
 	}
 
+	bool operator<=(const KruskalEdge &edge) const {
+		return weight <= edge.weight;
+	}
+
 	bool operator>(const KruskalEdge &edge) const {
 		return weight > edge.weight;
+	}
+
+	bool operator>=(const KruskalEdge &edge) const {
+		return weight >= edge.weight;
 	}
 
 	bool operator!=(const KruskalEdge &edge) const {
 		return weight != edge.weight;
 	}
 
-
-
 };
+	inline std::ostream& operator<<(std::ostream& os, const KruskalEdge& edge)
+	{
+	    os << edge.from << " - " << edge.to << ": " << edge.weight;
+
+	    return os;
+	}
+
+

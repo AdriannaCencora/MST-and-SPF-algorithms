@@ -110,10 +110,11 @@ void AdjacencyList::executePrimsAlgorithm() {
 		adjacencyList[u].setCurrentNodeToHead();
 		while(adjacencyList[u].hasNodes()) {
 
-			int v = adjacencyList[u].getNodeData().first;
-			int weight = adjacencyList[u].getNodeData().second;
+			auto nodeData = adjacencyList[u].getNodeData();
+			int v = nodeData.first;
+			int weight = nodeData.second;
 
-			if (visited[v] == false and weight < mst[v]) {
+			if (!visited[v] and weight < mst[v]) {
 				mst[v] = weight;
 				parents[v] = u;
 				priorityQueue.insert(Edge(mst[v], v));
@@ -144,13 +145,14 @@ void AdjacencyList::executeKruskalsAlgorithm() {
 		adjacencyList[u].setCurrentNodeToHead();
 
 		 while(adjacencyList[u].hasNodes()) {
-
-			int dest = adjacencyList[u].getNodeData().first;
-			int weight = adjacencyList[u].getNodeData().second;
+			auto nodeData = adjacencyList[u].getNodeData();
+			int dest = nodeData.first;
+			int weight = nodeData.second;
 			priorityQueue.insert(KruskalEdge(u, dest, weight));
 
 		 }
 	}
+
 
 	std::cout << std::endl << "KRUSKAL'S ALGORITHM - ADJACENCY LIST" << std::endl;
 	while(!priorityQueue.isEmpty()) {
@@ -175,5 +177,128 @@ void AdjacencyList::executeKruskalsAlgorithm() {
 	std::cout << "Cost: " << finalCost << std::endl;
 }
 
-void AdjacencyList::executeDijkstraAlgorithm() {}
-void AdjacencyList::executeFordBellmanAlgorithm() {}
+void AdjacencyList::printParents(int *parents, int vertex) {
+	if (parents[vertex] == -1)
+		return;
+	printParents(parents, parents[vertex]);
+	std::cout << " -> " <<  vertex;
+
+}
+
+void AdjacencyList::executeDijkstraAlgorithm() {
+	Heap<Edge> priorityQueue;
+	int distances [numberOfVertices];
+	int parents [numberOfVertices];
+	bool visited [numberOfVertices];
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		distances[i] = INT_MAX;
+		parents[i] = -1;
+		visited[i] = false;
+	}
+
+	priorityQueue.insert(Edge(0, sourceVertex));
+	distances[sourceVertex] = 0;
+
+	while(!priorityQueue.isEmpty()) {
+
+		int u = priorityQueue.popElement().second;
+		visited[u] = true;
+
+		adjacencyList[u].setCurrentNodeToHead();
+		while(adjacencyList[u].hasNodes()) {
+			auto nodeData = adjacencyList[u].getNodeData();
+			int v = nodeData.first;
+			int weight = nodeData.second;
+
+			if(!visited[v] and distances[v] > (distances[u] + weight)) {
+				distances[v] = distances[u] + weight;
+				parents[v] = u;
+				priorityQueue.insert(Edge(distances[v], v));
+			}
+		}
+	}
+
+	std::cout << std::endl << "DIJKSTRA'S ALGORITHM - ADJACENCY LIST" << std::endl;
+
+	for (int i{0}; i < numberOfVertices; i++) {
+		std::cout << "Path: " << sourceVertex;
+
+		if (distances[i] != INT_MAX) {
+			printParents(parents, i);
+			std::cout << " weight: " << distances[i] << std::endl;
+		}
+	}
+
+
+}
+
+void AdjacencyList::executeFordBellmanAlgorithm() {
+	int distances [numberOfVertices];
+	int parents [numberOfVertices];
+
+	for(int i{0}; i < numberOfVertices; i++) {
+		distances[i] = INT_MAX;
+		parents[i] = -1;
+	}
+
+	distances[sourceVertex] = 0;
+	bool changed = true;
+
+	for(int i{0}; i < numberOfVertices - 1; i++) {
+		for (int u{0}; u < numberOfVertices; u++) {
+
+			if (distances[u] == INT_MAX)
+				continue;
+
+			adjacencyList[u].setCurrentNodeToHead();
+			while(adjacencyList[u].hasNodes()) {
+				auto nodeData = adjacencyList[u].getNodeData();
+				int v = nodeData.first;
+				int weight = nodeData.second;
+
+				if(distances[v] > (distances[u] + weight)) {
+					distances[v] = distances[u] + weight;
+					parents[v] = u;
+					changed = true;
+				}
+			}
+		}
+
+		if(!changed)
+			break;
+
+		changed = false;
+	}
+
+		for (int u{0}; u < numberOfVertices; u++) {
+
+			if (distances[u] == INT_MAX)
+				continue;
+
+			while(adjacencyList[u].hasNodes()) {
+				auto nodeData = adjacencyList[u].getNodeData();
+				int v = nodeData.first;
+				int weight = nodeData.second;
+
+				if (distances[v] > (distances[u] + weight)) {
+					std::cout << "Graph contains a negative-weight cycle." << std::endl;
+					return;
+				}
+			}
+		}
+
+	std::cout << std::endl << "BELLMAN-FORD'S ALGORITHM - ADJACENCY LIST" << std::endl;
+
+	for (int i{0}; i < numberOfVertices; i++) {
+		std::cout << "Path: " << sourceVertex;
+
+		if (distances[i] != INT_MAX) {
+			printParents(parents, i);
+			std::cout << " weight: " << distances[i] << std::endl;
+		}
+	}
+
+
+
+}
