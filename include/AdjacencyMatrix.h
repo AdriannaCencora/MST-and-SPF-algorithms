@@ -24,7 +24,7 @@ class AdjacencyMatrix {
 	private:
 		int numberOfVertices;
 		int numberOfEdges;
-		int sourceVertex;
+		int sourceVertex = 0;
 
 		//MST - graph is not directed.
 		//Shortest path - graph is directed. Also file contains source vertex.

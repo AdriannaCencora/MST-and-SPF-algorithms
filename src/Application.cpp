@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Application.h"
+#include "Test.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ void Application::displayMenu() {
 	cout << "Choose problem to solve." << endl;
 	cout << "1. Minimum spanning tree problem." << endl;
 	cout << "2. Shortest path problem." << endl;
+	cout << "3. Tests." << endl;
 	cout << "0. Exit" << endl << endl;
 
 }
@@ -61,6 +63,12 @@ void Application::run() {
 			case '2':
 				{
 					shortestPathOperation();
+					break;
+				}
+			case '3':
+				{
+					Test test;
+					test.runTests();
 					break;
 				}
 			default:

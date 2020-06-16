@@ -95,8 +95,6 @@ void AdjacencyList::fillWithRandomData(int givenNumberOfVertices, int density) {
 
 	numberOfVertices = givenNumberOfVertices;
 
-	std::cout <<  numberOfVertices << std::endl;
-
 	initialize();
 
 	//dummy mst TODO: improve method
@@ -105,29 +103,19 @@ void AdjacencyList::fillWithRandomData(int givenNumberOfVertices, int density) {
 		addEdge(0, i, weight);
 	}
 
-	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
-	std::cout << "Density: " << density << std::endl;
 	while (getCurrentDensity() < density) {
-	std::cout << "getCurrentDensity: " << getCurrentDensity() << std::endl;
 		int from = rand() % numberOfVertices;
 		int to = rand() % numberOfVertices;
 		int weight = rand() % weightRange + weightBase;
-		std::cout << "from: " << from << " to: " <<  to <<  std::endl;
-		printList();
 		if (from == to) {
-			std::cout << " if (from == to): ";
-			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
 			continue;
 		}
 
 		if (findEdge(from, to)) {
-			std::cout << " findEdge(from, to): ";
-			std::cout << "from: " << from << " to: " <<  to <<  std::endl;
 			continue;
 		}
 
 		addEdge(from, to, weight);
-
 	}
 
 }
@@ -138,7 +126,6 @@ void AdjacencyList::clear() {
 			adjacencyList[i].clearStructure();
 		}
 
-		delete[] adjacencyList;
 	}
 
 	numberOfEdges = 0;
