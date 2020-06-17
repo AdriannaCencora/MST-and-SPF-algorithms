@@ -96,23 +96,21 @@ bool AdjacencyMatrix::findEdge(int from, int to) {
 
 void AdjacencyMatrix::fillWithRandomData(int givenNumberOfVertices, int density) {
 
-	std::cout << "DUPA0";
 	int weightRange = 100;
 	int weightBase = 1;
+
 	clear();
-	std::cout << "DUPA1";
+
 	numberOfVertices = givenNumberOfVertices;
 
 	initialize();
 
-	std::cout << "DUPA2";
 	//dummy mst TODO: improve method
 	for(int i{1}; i < numberOfVertices; i++) {
 		int weight = rand() % weightRange + weightBase;
 		addEdge(0, i, weight);
 	}
 
-	std::cout << "DUPA3";
 	while (getCurrentDensity() < density) {
 		int from = rand() % numberOfVertices;
 		int to = rand() % numberOfVertices;
